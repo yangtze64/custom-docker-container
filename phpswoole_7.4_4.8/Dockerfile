@@ -18,9 +18,8 @@ RUN apt-get update --fix-missing  \
            && curl -L -o /tmp/swoole.tar.gz https://ghproxy.com/https://github.com/swoole/swoole-src/archive/refs/tags/v4.8.10.tar.gz && tar -zxvf /tmp/swoole.tar.gz && mv swoole-src-4.8.10 /usr/src/php/ext/swoole && rm -rf /tmp/swoole.tar.gz \
            && docker-php-ext-configure swoole --enable-openssl --with-openssl-dir=/usr/lib/ssl --enable-http2 --enable-swoole-json --enable-swoole-curl --enable-cares && docker-php-ext-install swoole \
            && curl -L -o /tmp/rdkafka.tar.gz https://ghproxy.com/https://github.com/arnaud-lb/php-rdkafka/archive/refs/tags/6.0.1.tar.gz && tar -zxvf /tmp/rdkafka.tar.gz && mv php-rdkafka-6.0.1 /usr/src/php/ext/rdkafka && rm -rf /tmp/rdkafka.tar.gz && docker-php-ext-install rdkafka \
-           && docker-php-source delete \
-    && curl -L -o /usr/local/bin/composer https://getcomposer.org/download/2.4.2/composer.phar && chmod +x /usr/local/bin/composer  \
-    && composer config -g repo.packagist composer https://mirrors.cloud.tencent.com/composer
+           && docker-php-source delete
+
 
  # RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
