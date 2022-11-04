@@ -1,0 +1,10 @@
+FROM gingercj/hyperf_7.4-alpine-v3.15:latest
+LABEL maintainer="yuchangjiang@hulianpai.com"
+RUN apk add --no-cache --virtual .build-deps autoconf gcc g++ make automake && wget -nv -O /usr/local/bin/composer https://ghproxy.com/https://github.com/composer/composer/releases/download/2.4.2/composer.phar  \
+    && chmod u+x /usr/local/bin/composer \
+    && cd /tmp/ && curl -SL -o fswatch.tgz https://ghproxy.com/https://github.com/emcrisostomo/fswatch/releases/download/1.17.0/fswatch-1.17.0.tar.gz \
+    && tar -zxvf fswatch.tgz && cd fswatch-1.17.0 && ./configure && make -j$(nproc) && make install \
+    && apk del .build-deps && echo "swoole.use_shortname = off" >> /usr/local/etc/php/conf.d/custom.ini
+
+WORKDIR /opt/www
+CMD composer install -vvv ; php bin/hyperf.php server:watch
