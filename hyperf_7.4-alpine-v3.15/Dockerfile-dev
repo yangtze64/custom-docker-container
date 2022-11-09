@@ -4,7 +4,15 @@ RUN apk add --no-cache --virtual .build-deps autoconf gcc g++ make automake && w
     && chmod u+x /usr/local/bin/composer \
     && cd /tmp/ && curl -SL -o fswatch.tgz https://ghproxy.com/https://github.com/emcrisostomo/fswatch/releases/download/1.17.0/fswatch-1.17.0.tar.gz \
     && tar -zxvf fswatch.tgz && cd fswatch-1.17.0 && ./configure && make -j$(nproc) && make install \
-    && apk del .build-deps && echo "swoole.use_shortname = off" >> /usr/local/etc/php/conf.d/custom.ini
+    && apk del .build-deps && apk add --no-cache bash  \
+    && echo "date.timezone = PRC" >> /usr/local/etc/php/conf.d/custom.ini \
+    && echo "upload_max_filesize = 20M" >> /usr/local/etc/php/conf.d/custom.ini \
+    && echo "post_max_size = 64M" >> /usr/local/etc/php/conf.d/custom.ini \
+    && echo "memory_limit = 1024M" >> /usr/local/etc/php/conf.d/custom.ini \
+    && echo "max_execution_time = 60" >> /usr/local/etc/php/conf.d/custom.ini \
+    && echo "max_input_vars = 5000" >> /usr/local/etc/php/conf.d/custom.ini \
+    && echo "swoole.use_shortname = off" >> /usr/local/etc/php/conf.d/custom.ini \
+    && echo "phar.readonly = Off" >> /usr/local/etc/php/conf.d/custom.ini
 
 WORKDIR /opt/www
 CMD composer install -vvv ; php bin/hyperf.php server:watch
